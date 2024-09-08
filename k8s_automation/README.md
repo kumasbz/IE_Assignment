@@ -5,7 +5,7 @@
 
 This project contains a set of shell scripts to automate operations on a bare Kubernetes cluster, including:
 - Cluster initialization
-- Deployment creation using a YAML template
+- Deployment creation
 - Health status retrieval
 
 ## Prerequisites
@@ -34,21 +34,42 @@ This project contains a set of shell scripts to automate operations on a bare Ku
    sudo systemctl start docker
    sudo apt-get install -y kubelet kubeadm kubectl
 
-2. **Cluster Initialization**
+2. **Fetch the Automation script**
+
+   Run the follwoing command on the master node to fetch the automation scripts and provide execute permissions
+   
+   ```bash
+   git clone https://github.com/kumasbz/IE_Assignment.git
+   cd IE_Assignment/k8s_automation/
+   chmod +x ./scripts/*
+
+
+3. **Cluster Initialization**
 
    Run the following command on the master node to initialize the Kubernetes cluster:
 
    ```bash
    sudo ./scripts/cluster_init.sh
 
-3. **Create a Deployment**
+4. **Join the Worker nodes to the cluster**
 
-   Run the following command on the master node to create the deployment
+   - Copy the kubeadm join command displayed after initiating the cluster in previous step and run it on each of the worker nodes
+   - To check if the nodes were successfully attached to the cluster, run the command below
+
+   ```bash
+   sudo kubectl get nodes
+
+
+5. **Create a Deployment**
+
+   Run the following command on the master node to create and verify the deployment
 
    ```bash
    sudo ./scripts/create_deployment.sh test-namespace test-deployment nginx:latest 100m 500m 128Mi 512Mi 80 50
+   sudo kubectl get deployments -n test-namespace
 
-4. **Get Health Status for a given deployment**
+
+6. **Get Health Status for a given deployment**
 
    Run the following command on the master node to get the health status for a given deployment
 
