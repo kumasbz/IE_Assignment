@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Validate arguments
-if [ "$#" -ne 7 ]; then
+if [ "$#" -ne 10 ]; then
   echo "Usage: $0 <namespace> <deployment_name> <image> <cpu_request> <cpu_limit> <memory_request> <memory_limit> <port> <cpu_target> <memory_target>"
   exit 1
 fi
@@ -70,7 +70,7 @@ EOF
 
 # Create Horizontal Pod Autoscaler
 cat <<EOF | kubectl apply -f -
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: $DEPLOYMENT_NAME-hpa
