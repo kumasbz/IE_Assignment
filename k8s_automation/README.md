@@ -23,6 +23,8 @@ This project contains a set of shell scripts to automate operations on a bare Ku
    
    - Spin up 3 Ubuntu VMs (I used AWS EC2. Master node requires min 2 CPU codes and 1700 MB, so deploy it on t2.medium. Worked nodes can run on t2.micro)
 
+   - Run the commands below on all 3 VMs to install docker, kubelet, kubeadm, kubectl
+
    ```bash
    echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
