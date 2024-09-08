@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Validate arguments
-if [ "$#" -ne 10 ]; then
+if [ "$#" -ne 9 ]; then
   echo "Usage: $0 <namespace> <deployment_name> <image> <cpu_request> <cpu_limit> <memory_request> <memory_limit> <port> <cpu_target> <memory_target>"
   exit 1
 fi
@@ -15,7 +15,6 @@ MEMORY_REQUEST=$6
 MEMORY_LIMIT=$7
 PORT=$8
 CPU_TARGET=$9
-MEMORY_TARGET=${10}
 
 # Create the namespace if it doesn't exist
 kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply -f -
@@ -73,28 +72,16 @@ cat <<EOF | kubectl apply -f -
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: $DEPLOYMENT_NAME-hpa
-  namespace: $NAMESPACE
+  name: ${DEPLOYMENT_NAME}-hpa
+  namespace: ${NAMESPACE}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: $DEPLOYMENT_NAME
+    name: ${DEPLOYMENT_NAME}
   minReplicas: 1
-  maxReplicas: 10
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: $CPU_TARGET
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: $MEMORY_TARGET
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: ${CPU_TARGET}
 EOF
 
 echo "Deployment, Service, and HPA created in namespace: $NAMESPACE"
