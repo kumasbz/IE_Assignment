@@ -1,19 +1,5 @@
 # Kubernetes Automation Scripts
 
-## Deploying a Bare Kubernetes Cluster
-
-This section contains instructions on how to spin up a bare kubernetes cluster
-
-- Spin up 3 Ubuntu VMs (I used AWS EC2. Master node requires min 2 CPU codes and 1700 MB, so deploy it on t2.medium. Worked nodes can run on t2.micro)
-- echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-sudo apt-get update
-sudo apt-get install -y docker.io
-sudo systemctl enable docker
-sudo systemctl start docker
-sudo apt-get install -y kubelet kubeadm kubectl
-sudo apt-mark hold kubelet kubeadm kubectl
-
 
 ## Overview
 
@@ -31,9 +17,38 @@ This project contains a set of shell scripts to automate operations on a bare Ku
 
 ## Setup Instructions
 
-1. **Cluster Initialization**
+1. **Deploy a Bare Kubernetes Cluster**
+
+   This section contains instructions on how to spin up a bare kubernetes cluster
+   
+   - Spin up 3 Ubuntu VMs (I used AWS EC2. Master node requires min 2 CPU codes and 1700 MB, so deploy it on t2.medium. Worked nodes can run on t2.micro)
+
+   ```bash
+   echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   sudo apt-get update
+   sudo apt-get install -y docker.io
+   sudo systemctl enable docker
+   sudo systemctl start docker
+   sudo apt-get install -y kubelet kubeadm kubectl
+
+2. **Cluster Initialization**
 
    Run the following command on the master node to initialize the Kubernetes cluster:
 
    ```bash
    sudo ./scripts/cluster_init.sh
+
+3. **Create a Deployment**
+
+   Run the following command on the master node to create the deployment
+
+   ```bash
+   sudo ./scripts/create_deployment.sh test-namespace test-deployment nginx:latest 100m 500m 128Mi 512Mi 80 50
+
+4. **Get Health Status for a given deployment**
+
+   Run the following command on the master node to get the health status for a given deployment
+
+   ```bash
+   sudo ./scripts/get_health_status.sh test-namespace test-deployment
