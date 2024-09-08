@@ -1,18 +1,24 @@
-# Kubernetes Automation
+# Kubernetes Automation Scripts
 
-This project provides a CLI and API to automate Kubernetes operations including cluster initialization, deployment creation, and health status retrieval.
+## Overview
+
+This project contains a set of shell scripts to automate operations on a bare Kubernetes cluster, including:
+- Cluster initialization
+- Deployment creation using a YAML template
+- Health status retrieval
 
 ## Prerequisites
 
-- AWS EC2 instances running Ubuntu 20.04 or 22.04.
-- Docker installed on EC2 instances.
-- Kubernetes tools (`kubeadm`, `kubectl`, `kubelet`) installed.
+- Kubernetes installed on the master and worker nodes
+- `kubectl` configured on the master node
+- Docker installed on all nodes
+- Internet access to download network plugins and Docker images
 
 ## Setup Instructions
 
-1. **Cluster Initialization:**
+1. **Cluster Initialization**
 
-   Run the `scripts/cluster_init.sh` script on the master node:
+   Run the following command on the master node to initialize the Kubernetes cluster:
 
    ```bash
-   ./scripts/cluster_init.sh
+   sudo ./scripts/cluster_init.sh
