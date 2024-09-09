@@ -53,7 +53,7 @@ This project contains a set of shell scripts to automate operations on a bare Ku
 
 4. **Join the Worker nodes to the cluster**
 
-   - Copy the kubeadm join command displayed after initiating the cluster in previous step and run it on each of the worker nodes
+   - Copy the `kubeadm join` command displayed after initiating the cluster in previous step and run it on each of the worker nodes
    - To check if the nodes were successfully attached to the cluster, run the command below
 
    ```bash
